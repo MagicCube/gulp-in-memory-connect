@@ -7,6 +7,8 @@ npm install --save-dev gulp-in-memory-connect
 ```
 
 # Usage
+
+## Basic
 ```js
 var gulp = require("gulp");
 var babel = require("gulp-babel");
@@ -17,7 +19,7 @@ gulp.task("default", ["build"]);
 gulp.task("build", function() {
   gulp.src("src/**/*.js")
       .pipe(babel())
-      .pipe(connect.dest("./public/assets/", "assets/"));     // before: pipe(gulp.dest("./assets/"))
+      .pipe(connect.dest("./public/assets/"));     // before: pipe(gulp.dest("./assets/"))
 });
 
 gulp.task("connect:start", [], function() {
@@ -25,6 +27,16 @@ gulp.task("connect:start", [], function() {
     port: 8888             // By default, port is 8080.
     path: "/my-app/",      // Use the local folder 'public' as the
     localPath: "./public", // server path '/my-app'.
+  });
+});
+```
+
+## Watch
+```js
+gulp.task("watch", [ "build", "connect" ], function() {
+  gulp.watch("src/**/*.js", function(e) {
+    gulp.src(e.path)
+        .pipe(connect.trigger(e));
   });
 });
 ```

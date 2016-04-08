@@ -8,35 +8,49 @@ npm install --save-dev gulp-in-memory-connect
 
 # Usage
 
-## Basic
+## Basis
 ```js
-var gulp = require("gulp");
 var babel = require("gulp-babel");
 var connect = require("gulp-in-memory-connect");
+var gulp = require("gulp");
+var runSequence = require("run-sequence");
+var watch = require("gulp-watch");
 
-gulp.task("default", ["build"]);
-
-gulp.task("build", function() {
-  gulp.src("src/**/*.js")
-      .pipe(babel())
-      .pipe(connect.dest("./public/assets/"));     // before: pipe(gulp.dest("./assets/"))
+gulp.task("default", function(cb) {
+    // The plugin must be set up before use.
+    connect.setup({
+        dev: false
+    });
+    runSequence("build", cb);
 });
 
-gulp.task("connect:start", [], function() {
-  connect.start({
-    port: 8888             // By default, port is 8080.
-    path: "/my-app/",      // Use the local folder 'public' as the
-    localPath: "./public", // server path '/my-app'.
-  });
+gulp.task("build", function() {
+    const glob = "src/**/*.js";
+    const chain = gulp.src(glob);
+    if (connect.isDev())
+    {
+        chain.pipe(watch(glob));
+    }
+
+    return chain.pipe(babel())
+                .pipe(connect.dest("./public/assets/"));
 });
 ```
 
-## Watch
+## Development mode
 ```js
-gulp.task("watch", [ "build", "connect" ], function() {
-  gulp.watch("src/**/*.js", function(e) {
-    gulp.src(e.path)
-        .pipe(connect.trigger(e));
-  });
+gulp.task("dev", function(cb) {
+    connect.setup({
+        dev: true,
+        devServer: {
+            port: 8888             // By default, port is 8080.
+            path: "/my-app/",      // Use the local folder 'public' as the
+            localPath: "./public", // server path '/my-app'.
+        }
+    });
+    connect.listen();
+
+    // Now all the built assets will be stored in memory.
+    runSequence("build", cb);
 });
 ```

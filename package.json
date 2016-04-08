@@ -1,0 +1,37 @@
+{
+  "name": "gulp-in-memory-connect",
+  "version": "1.0.0",
+  "description": "A handy Gulp plugin which allow you easily switch the destination between in-memory and local file storage. When using in-memory mode, it will also start a web server at localhost.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagicCube/gulp-in-memory-connect.git"
+  },
+  "keywords": [
+    "gulp",
+    "gulpplugin",
+    "in-memory",
+    "server",
+    "debug",
+    "dev",
+    "development",
+    "memory"
+  ],
+  "author": "Henry Li <henry1943@163.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MagicCube/gulp-in-memory-connect/issues"
+  },
+  "homepage": "https://github.com/MagicCube/gulp-in-memory-connect#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "gulp-util": "^3.0.7",
+    "through2": "^2.0.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
